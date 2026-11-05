@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Вход — Лотос{% endblock %}
+{% block content %}
+<div class="form-wrap">
+  <form class="form-card" method="post">
+    <h1>С возвращением</h1>
+    <p class="sub">Войдите в свой аккаунт.</p>
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required value="{{ request.form.get('email', '') }}">
+
+    <label for="password">Пароль</label>
+    <input id="password" name="password" type="password" required>
+
+    <button class="btn" type="submit">Войти</button>
+    <p class="switch">Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a></p>
+  </form>
+</div>
+{% endblock %}

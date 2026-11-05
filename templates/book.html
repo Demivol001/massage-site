@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Запись — Лотос{% endblock %}
+{% block content %}
+<div class="form-wrap">
+  <form class="form-card wide" method="post" id="bookForm">
+    <h1>Запись на массаж</h1>
+    <p class="sub">Выберите услугу, мастера и удобное время.</p>
+
+    <label for="service">Услуга</label>
+    <select id="service" name="service" required>
+      <option value="">— выберите массаж —</option>
+      {% for s in services %}
+        <option value="{{ s.id }}" {% if preselect_service == s.id %}selected{% endif %}>
+          {{ s.name }} · {{ s.duration }} мин · {{ s.price }} ₽
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="specialist">Специалист</label>
+    <select id="specialist" name="specialist" required>
+      <option value="">— выберите мастера —</option>
+      {% for sp in specialists %}
+        <option value="{{ sp.id }}">{{ sp.name }} — {{ sp.role }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="day">Дата</label>
+    <input id="day" name="day" type="date" min="{{ min_day }}" max="{{ max_day }}" required>
+
+    <label>Время</label>
+    <div class="slots" id="slots"></div>
+    <input type="hidden" name="time" id="time">
+    <p class="hint" id="slotsHint">Сначала выберите мастера и дату.</p>
+
+    <div class="address-box">
+      <b>Ждём вас по адресу:</b> {{ salon.address }}<br>
+      <b>Оплата:</b> наличными или картой в салоне после сеанса.
+    </div>
+
+    <button class="btn" type="submit">Записаться</button>
+  </form>
+</div>
+
+<script>
+// Когда меняется мастер или дата — спрашиваем у сервера, какие часы заняты
+const specialist = document.getElementById("specialist");
+const day = document.getElementById("day");
+const slotsBox = document.getElementById("slots");
+const timeInput = document.getElementById("time");
+const hint = document.getElementById("slotsHint");
+
+async function loadSlots() {
+  timeInput.value = "";
+  slotsBox.innerHTML = "";
+  if (!specialist.value || !day.value) return;
+
+  const resp = await fetch(`/api/slots?specialist=${specialist.value}&day=${day.value}`);
+  const data = await resp.json();
+
+  const now = new Date();
+  const isToday = day.value === now.toISOString().slice(0, 10) ||
+                  day.value === new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  const nowStr = now.toTimeString().slice(0, 5);
+
+  data.slots.forEach(t => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "slot";
+    btn.textContent = t;
+    // занято, либо время уже прошло (если выбран сегодняшний день)
+    if (data.taken.includes(t) || (isToday && t <= nowStr)) btn.disabled = true;
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".slot").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      timeInput.value = t;
+    });
+    slotsBox.appendChild(btn);
+  });
+  hint.textContent = "Зачёркнутое время уже занято.";
+}
+specialist.addEventListener("change", loadSlots);
+day.addEventListener("change", loadSlots);
+
+// Нельзя отправить форму без выбранного времени
+document.getElementById("bookForm").addEventListener("submit", e => {
+  if (!timeInput.value) { e.preventDefault(); alert("Выберите время."); }
+});
+</script>
+{% endblock %}

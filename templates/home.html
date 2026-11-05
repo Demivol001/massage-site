@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Главный экран -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <h1>Время остановиться и выдохнуть</h1>
+      <p>Салон массажа «Лотос»: опытные мастера, тёплая атмосфера и забота о вашем теле. Запишитесь онлайн за минуту.</p>
+      <a class="btn" href="{{ url_for('book') }}">Записаться на массаж</a>
+    </div>
+    <div class="hero-art">
+      <!-- Иллюстрация: камни, лотос, волны -->
+      <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="210" cy="210" r="190" fill="#ffffff" fill-opacity=".07"/>
+        <circle cx="210" cy="210" r="140" fill="#ffffff" fill-opacity=".07"/>
+        <!-- лотос -->
+        <path d="M210 70c28 36 36 78 0 140-36-62-28-104 0-140z" fill="#e3c48f"/>
+        <path d="M130 110c46 8 78 42 80 110-56-4-92-46-80-110z" fill="#c9a062"/>
+        <path d="M290 110c-46 8-78 42-80 110 56-4 92-46 80-110z" fill="#c9a062"/>
+        <path d="M82 170c48-8 94 14 128 66-60 16-110-4-128-66z" fill="#8fae9a"/>
+        <path d="M338 170c-48-8-94 14-128 66 60 16 110-4 128-66z" fill="#8fae9a"/>
+        <!-- камни -->
+        <ellipse cx="210" cy="300" rx="92" ry="26" fill="#3b4a40"/>
+        <ellipse cx="210" cy="284" rx="72" ry="22" fill="#566a5c"/>
+        <ellipse cx="210" cy="270" rx="50" ry="18" fill="#7a9183"/>
+        <ellipse cx="200" cy="264" rx="18" ry="5" fill="#fff" fill-opacity=".25"/>
+        <!-- волны -->
+        <path d="M60 350c30-16 60 16 90 0s60-16 90 0 60 16 90 0 30-8 30-8" stroke="#e3c48f" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>
+        <path d="M80 372c26-12 52 12 78 0s52-12 78 0 52 12 78 0" stroke="#8fae9a" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- О салоне -->
+<section class="section about">
+  <div class="container">
+    <div class="about-art">
+      <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#efe6d7"/><stop offset="1" stop-color="#e2d3bb"/>
+          </linearGradient>
+        </defs>
+        <rect width="520" height="380" fill="url(#wall)"/>
+        <!-- окно -->
+        <rect x="340" y="40" width="130" height="170" rx="8" fill="#cfe0d6"/>
+        <path d="M405 40v170M340 125h130" stroke="#fffdf9" stroke-width="6"/>
+        <!-- растение -->
+        <path d="M70 330c-4-60 6-100 30-150M100 330c6-50 24-90 56-120M80 330c-14-40-34-70-62-86" stroke="#3f5b4b" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="100" cy="180" rx="14" ry="32" fill="#4d7059" transform="rotate(20 100 180)"/>
+        <ellipse cx="156" cy="208" rx="14" ry="30" fill="#5d7d69" transform="rotate(40 156 208)"/>
+        <ellipse cx="22" cy="244" rx="12" ry="28" fill="#5d7d69" transform="rotate(-50 22 244)"/>
+        <rect x="52" y="326" width="70" height="40" rx="8" fill="#b88a4a"/>
+        <!-- массажный стол -->
+        <rect x="150" y="250" width="270" height="34" rx="14" fill="#fffdf9"/>
+        <rect x="150" y="250" width="270" height="12" rx="6" fill="#f0e8da"/>
+        <rect x="176" y="284" width="12" height="70" fill="#8a6a3c"/>
+        <rect x="382" y="284" width="12" height="70" fill="#8a6a3c"/>
+        <rect x="150" y="238" width="60" height="18" rx="9" fill="#3f5b4b"/>
+        <!-- свечи и камни -->
+        <rect x="446" y="290" width="22" height="40" rx="4" fill="#fffdf9"/>
+        <path d="M457 266c8 10 8 16 0 22-8-6-8-12 0-22z" fill="#e3a847"/>
+        <ellipse cx="300" cy="372" rx="26" ry="7" fill="#566a5c"/>
+        <ellipse cx="300" cy="364" rx="18" ry="6" fill="#7a9183"/>
+      </svg>
+    </div>
+    <div>
+      <h2>О нашем салоне</h2>
+      <p>«Лотос» — это место, где городской шум остаётся за дверью. Мы работаем с 2014 года и помогли тысячам клиентов избавиться от боли в спине, усталости и стресса.</p>
+      <p>В салоне используем только гипоаллергенные масла, одноразовые простыни и комфортные столы с подогревом. Каждому гостю мастер подбирает технику индивидуально.</p>
+      <div class="facts">
+        <div><b>12</b><span>лет опыта</span></div>
+        <div><b>3</b><span>мастера</span></div>
+        <div><b>6</b><span>видов массажа</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Услуги (данные берутся из БД) -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Наши услуги</h2>
+      <p>Выберите массаж по самочувствию и цели</p>
+    </div>
+    <div class="grid grid-3">
+      {% for s in services %}
+      <div class="card">
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.description }}</p>
+        <div class="meta">
+          <span>{{ s.duration }} мин</span>
+          <span class="price">{{ "{:,}".format(s.price).replace(",", " ") }} ₽</span>
+        </div>
+        <a class="btn btn-outline btn-small" style="margin-top:16px" href="{{ url_for('book', service=s.id) }}">Записаться</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Мастера -->
+<section class="section" style="background:var(--card)">
+  <div class="container">
+    <div class="section-title">
+      <h2>Наши мастера</h2>
+      <p>Сертифицированные специалисты с большим опытом</p>
+    </div>
+    <div class="grid grid-3">
+      {% for sp in specialists %}
+      <div class="card">
+        <div class="avatar">{{ sp.name[0] }}</div>
+        <h3>{{ sp.name }}</h3>
+        <div class="role">{{ sp.role }}</div>
+        <p>{{ sp.bio }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Контакты -->
+<section class="section contacts">
+  <div class="container">
+    <div class="grid">
+      <div><h3>Адрес</h3><p>{{ salon.address }}</p></div>
+      <div><h3>Часы работы</h3><p>{{ salon.hours }}</p></div>
+      <div><h3>Телефон</h3><p>{{ salon.phone }}</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">© 2026 Салон массажа «Лотос». Оплата наличными или картой в салоне.</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Админ — Лотос{% endblock %}
+{% block body_class %}admin-body{% endblock %}
+{% block content %}
+<div class="container page">
+  <h1>Панель администратора</h1>
+
+  <div class="stats">
+    <div class="stat"><b>{{ stats.upcoming }}</b><span>предстоящих записей</span></div>
+    <div class="stat"><b>{{ stats.total }}</b><span>всего записей</span></div>
+    <div class="stat"><b>{{ stats.clients }}</b><span>клиентов зарегистрировано</span></div>
+  </div>
+
+  <form class="filter" method="get">
+    <div>
+      <label for="day">Показать записи за дату</label>
+      <input id="day" type="date" name="day" value="{{ day }}">
+    </div>
+    <button class="btn btn-small" type="submit">Показать</button>
+    {% if day %}<a class="btn btn-outline btn-small" style="color:#fff;border-color:#fff" href="{{ url_for('admin') }}">Сбросить</a>{% endif %}
+  </form>
+
+  {% for d, items in grouped.items() %}
+  <div class="day-group">
+    <h2>{{ d | rudate }}{% if d == today %} · сегодня{% endif %}</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Время</th><th>Клиент</th><th>Телефон</th><th>Услуга</th><th>Мастер</th><th></th></tr>
+        {% for b in items %}
+        <tr>
+          <td class="time">{{ b.time }}</td>
+          <td>{{ b.client }}</td>
+          <td><a href="tel:{{ b.phone }}">{{ b.phone }}</a></td>
+          <td>{{ b.service }}</td>
+          <td>{{ b.specialist }}</td>
+          <td>
+            <form method="post" action="{{ url_for('admin_delete', booking_id=b.id) }}" onsubmit="return confirm('Удалить запись?')">
+              <button class="btn btn-danger btn-small" type="submit">Удалить</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <p style="color:#aebcb2">Записей пока нет.</p>
+  {% endfor %}
+</div>
+{% endblock %}

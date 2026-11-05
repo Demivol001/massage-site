@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Мои записи — Лотос{% endblock %}
+{% block content %}
+<div class="container page">
+  <h1>Мои записи</h1>
+
+  {% for b in bookings %}
+  <div class="booking">
+    <div>
+      <h3>{{ b.service }}
+        {% if b.day < today %}<span class="badge past">прошла</span>{% else %}<span class="badge">предстоит</span>{% endif %}
+      </h3>
+      <small>{{ b.day | rudate }}, {{ b.time }} · мастер: {{ b.specialist }} · {{ b.duration }} мин · {{ b.price }} ₽</small><br>
+      <small>Адрес: {{ salon.address }} · оплата в салоне</small>
+    </div>
+    {% if b.day >= today %}
+    <form method="post" action="{{ url_for('cancel_booking', booking_id=b.id) }}" onsubmit="return confirm('Отменить запись?')">
+      <button class="btn btn-danger btn-small" type="submit">Отменить</button>
+    </form>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="empty">
+    <p>У вас пока нет записей.</p><br>
+    <a class="btn" href="{{ url_for('book') }}">Записаться на массаж</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

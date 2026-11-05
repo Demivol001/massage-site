@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Салон «Лотос»{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<header class="header">
+  <div class="container">
+    <a href="{{ url_for('home') }}" class="logo">
+      <!-- маленький лотос -->
+      <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+        <path d="M32 8c6 8 8 16 0 30-8-14-6-22 0-30z" fill="#b88a4a"/>
+        <path d="M12 22c10 2 17 8 20 22C20 44 12 36 12 22z" fill="#3f5b4b"/>
+        <path d="M52 22c-10 2-17 8-20 22 12 0 20-8 20-22z" fill="#3f5b4b"/>
+        <path d="M6 38c10-2 18 2 26 12-12 4-22 0-26-12z" fill="#5d7d69"/>
+        <path d="M58 38c-10-2-18 2-26 12 12 4 22 0 26-12z" fill="#5d7d69"/>
+      </svg>
+      Лотос
+    </a>
+    <nav class="nav">
+      {% if user %}
+        {% if user.is_admin %}
+          <a href="{{ url_for('admin') }}">Записи</a>
+        {% else %}
+          <a href="{{ url_for('home') }}">Главная</a>
+          <a href="{{ url_for('my_bookings') }}">Мои записи</a>
+          <a href="{{ url_for('book') }}" class="btn btn-small">Записаться</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}">Выйти ({{ user.name.split()[0] }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Войти</a>
+        <a href="{{ url_for('register') }}" class="btn btn-small">Регистрация</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, text in messages %}
+      <div class="flash {{ category }}">{{ text }}</div>
+    {% endfor %}
+  {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
